@@ -1,5 +1,5 @@
 name: Matrix
-on: push
+on: pull_request
 
 jobs:
   node-version:
@@ -9,16 +9,16 @@ jobs:
         node_version: [6, 8, 10]
         include:
           - os: ubuntu-latest
-            node_version: 4
-            # is_ubuntu_8: "true"
+            node_version: 8
+            is_ubuntu_8: "true"
         exclude:
           - os: macos-latest
             node_version: 8
           - os: ubuntu-latest
             node_version: 6
     runs-on: ${{ matrix.os }}
-    # env:
-    #   IS_UBUNTU_8: ${{ matrix.is_ubuntu_8 }}
+    env:
+      IS_UBUNTU_8: ${{ matrix.is_ubuntu_8 }}
     steps:
       - name: Log Node Version
         run: node -v
