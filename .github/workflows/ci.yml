@@ -40,7 +40,7 @@ jobs:
         run: |
           echo "Logging Environment Variables"
           echo "============="
-          echo "Present Working Directory: ${pwd}"
+          echo "pwd: $(pwd)"
           pwd -P
           echo $GOROOT
           echo $GOPATH
