@@ -47,4 +47,4 @@ jobs:
           ls -latr $GOBIN
           go env
           echo "============="
-          go run cmd/web/main.go 
+          sh run.sh 
