@@ -34,6 +34,7 @@ jobs:
           echo "Changing Working Directory"
           cd
           mkdir circle-ci-lambda
+          pwd
         working-directory: circle-ci-lambda
       - name: Checkout
         uses: actions/checkout@v1
