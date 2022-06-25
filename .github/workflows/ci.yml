@@ -11,6 +11,8 @@ on:
 jobs:
   docker-steps:
     runs-on: ubuntu-latest
+    env:
+      working-directory: circle-ci-lambda
     services:
       mongo:
         image: mongo:4.2.21
@@ -32,10 +34,9 @@ jobs:
       - name: Change Working Directory
         run: |
           echo "Changing Working Directory"
-          mkdir circle-ci-lambda
+          mkdir ${{ env.working-directory }}
           pwd
           ls -l
-        working-directory: circle-ci-lambda
       - name: Checkout
         uses: actions/checkout@v1
       - name: Log Env Variables
@@ -54,3 +55,4 @@ jobs:
           ls -latr $GOBIN
           go env
           echo "============="
+        working-directory: ${{ env.working-directory }}
