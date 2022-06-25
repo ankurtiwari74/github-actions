@@ -32,6 +32,7 @@ jobs:
       - name: Change Working Directory
         run: |
           echo "Changing Working Directory"
+          mkdir ~/circle-ci-lambda
         working-directory: ~/circle-ci-lambda
       - name: Checkout
         uses: actions/checkout@v1
