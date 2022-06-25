@@ -28,3 +28,6 @@ jobs:
         image: golang:1.17-alpine3.15
         ports:
           - "8080:8080"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
