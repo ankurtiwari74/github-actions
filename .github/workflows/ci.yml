@@ -10,9 +10,10 @@ on:
   
 jobs:
   docker-steps:
+    defaults:
+      run:
+        working-directory: circle-ci-lambda
     runs-on: ubuntu-latest
-    env:
-      working-directory: circle-ci-lambda
     services:
       mongo:
         image: mongo:4.2.21
@@ -57,4 +58,4 @@ jobs:
           ls -latr $GOBIN
           go env
           echo "============="
-        working-directory: ${{ env.working-directory }}
+        working-directory: circle-ci-lambda
