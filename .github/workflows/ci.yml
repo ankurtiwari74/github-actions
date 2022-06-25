@@ -1,0 +1,30 @@
+name: Open Banking Backend
+
+on:
+  push:
+    branches: 
+      - dev
+  pull_request:
+    branches: 
+      - dev
+  
+jobs:
+  docker-steps:
+    runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:4.2.21
+        ports:
+          - "27017:27017"
+      postgres:
+        image: postgres:10.21-alpine
+        ports:
+          - "5432:5432"
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ''
+          POSTGRES_DB: circle_test
+      golang:
+        image: golang:1.17-alpine3.15
+        ports:
+          - "8080:8080"
