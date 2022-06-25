@@ -22,7 +22,7 @@ jobs:
           - "5432:5432"
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: ''
+          POSTGRES_PASSWORD: postgres
           POSTGRES_DB: circle_test
       golang:
         image: golang:1.17-alpine3.15
