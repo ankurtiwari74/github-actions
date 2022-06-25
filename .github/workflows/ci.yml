@@ -34,7 +34,9 @@ jobs:
       - name: Change Working Directory
         run: |
           echo "Changing Working Directory"
-          mkdir ${{ env.working-directory }}
+          mkdir circle-ci-lambda
+          pwd
+          cd circle-ci-lambda
           pwd
           ls -l
       - name: Checkout
@@ -55,4 +57,4 @@ jobs:
           ls -latr $GOBIN
           go env
           echo "============="
-        working-directory: ${{ env.working-directory }}
+        # working-directory: ${{ env.working-directory }}
