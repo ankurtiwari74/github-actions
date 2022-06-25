@@ -1,0 +1,33 @@
+{{template "base" .}}
+{{define "content"}}
+<div class="container">
+	<form action="/search" method="post" class="container-mt-6">
+	<input type="hidden" name="csrf_token" value={{.CSRFToken}}>
+	<div class="form-group" id="daterangesearch">	
+		<div class="row">
+				<div class="col-md-4">
+					<input type="text" class="form-control" name="start">
+					<div id="startDateHelp" class="form-text">Enter Start Date: </div>
+				</div>
+					<span>to</span>
+				
+				<div class="col-md-4">
+					<input type="text" class="form-control" name="end"> 
+					<div id="endDateHelp" class="form-text">Enter End Date: </div>
+				</div>
+		</div>
+	</div>
+		<button type="submit" id="search" class="btn btn-primary">Search</button>
+	</form>
+</div>
+{{end}}
+{{define "js"}}
+<script>
+		const elem = document.getElementById('daterangesearch');
+        const rangepicker = new DateRangePicker(elem, {
+         			format: 'yyyy-mm-dd',
+                    showOnFocus: true,
+					minDate: new Date(),
+        }); 
+</script>
+{{end}}

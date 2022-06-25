@@ -1,0 +1,27 @@
+.my-footer {
+    background-color: green;
+    height: 5em;
+    margin-top: 1.5em;
+    padding: 1em;
+    font-size: 80%;
+    color: "#DDGHHK";
+}
+
+.room-image {
+    max-width: 100%
+}
+
+.btn-primary {
+    color: coral;
+    background-color: beige;
+    border-color: #0d6efd;
+}
+
+/* override styles here */
+.notie-container {
+    box-shadow: none;
+}
+
+.element {
+    z-index: 10000;
+}

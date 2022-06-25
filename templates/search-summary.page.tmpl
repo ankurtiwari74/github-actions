@@ -1,0 +1,14 @@
+{{template "base" .}}
+{{define "content"}}
+<div class="container">
+{{$res := index .DataMap "rooms"}}	
+	<div class="row">
+		<div class="col-md-4">
+			{{range $res}}
+				<a class="nav-link" href="/choose-room/{{.ID}}">Choose {{.RoomName}} Room</a><br>
+			{{end}}	
+		</div>
+	</div>	
+</div>
+{{end}}
+

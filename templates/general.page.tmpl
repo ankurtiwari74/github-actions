@@ -1,0 +1,92 @@
+{{template "base" .}}
+{{define "content"}}
+<div class="container">
+	<div clsss ="row">
+		<div class="col">
+			<img src ="../static/images/general.jpg" class="img-fluid room-image mac-auto d-block img-thumbnail">
+		</div>
+	</div>
+	<div clsss ="row">
+		<div class ="col">
+			<h1 class="text-center mt=3"> Welcome to Luxury Room Bookings!!!<h1>
+			<p>Be sure to have your pages set up with the latest design and development standards. That means using an HTML5 doctype and including a viewport meta tag for proper responsive behaviors. Put it all together and your pages should look like this:</p>
+		</div>
+	</div>
+	<div clsss ="row">
+		<div class ="col text-center">
+			<a class="btn btn-primary btn-lg" id="search" role="button" aria-disabled="true" href="#!">Search</a>
+		</div>
+	</div>
+</div>
+{{end}}
+{{define "js"}}
+<script>
+    document.getElementById("search").addEventListener("click", function () {
+        let html = `
+        <form id="checkdates" action="" method="post" novalidate class="needs-validation">
+            <div class="form-row">
+                <div class="col">
+                    <div class="row" id="reservation-dates-modal">
+                        <div class="col">
+                            <input disabled required class="form-control" name="start" id="start" placeholder="Arrival">
+                        </div>
+                        <div class="col">
+                            <input disabled required class="form-control" name="end" id="end" placeholder="Departure">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </form>`;
+        attention.custom({
+            title: 'Choose your dates',
+            msg: html,
+            willOpen: () => {
+                const elem = document.getElementById("reservation-dates-modal");
+                const rp = new DateRangePicker(elem, {
+                    format: 'yyyy-mm-dd',
+                    showOnFocus: true,
+                    minDate: new Date(),
+                })
+            },
+            didOpen: () => {
+                document.getElementById("start").removeAttribute("disabled");
+                document.getElementById("end").removeAttribute("disabled");
+            },
+            callback: function(result) {
+                console.log("called from generals page");
+                let form = document.getElementById("checkdates");
+                let formData = new FormData(form);
+                formData.append("csrf_token", "{{.CSRFToken}}");
+                formData.append("room_id","1")
+				console.log(formData)
+                fetch('/searchJSON', {
+                    method: "post",
+                    body: formData,
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.ok){
+                            attention.custom({
+                                icon: 'success',
+                                msg: '<p>Room is available!</p>'
+                                    +'<p><a href = "/book-room?id=' 
+                                    + data.room_id
+                                    +'&s=' 
+                                    + data.start_date
+                                    +'&e='
+                                    + data.end_date 
+                                    +'"class= "btn btn-primary">'
+                                    +'Book now!</a></p>',
+                            })
+                        }else{
+                            attention.error({
+                                msg :"No availability on selected dates!!!",
+                            });
+                        }
+                    })
+            }
+        });
+    })
+</script>
+{{end}}
