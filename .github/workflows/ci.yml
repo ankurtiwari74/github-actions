@@ -29,5 +29,25 @@ jobs:
         ports:
           - "8080:8080"
     steps:
+      - name: Change Working Directory
+        run: |
+          echo "Changing Working Directory"
+        working-directory: ~/circle-ci-lambda
       - name: Checkout
         uses: actions/checkout@v1
+      - name: Log Env Variables
+        run: |
+          echo "Logging Environment Variables"
+          echo "============="
+          pwd
+          pwd -P
+          echo $GOROOT
+          echo $GOPATH
+          export GOBIN=$GOPATH/bin
+          echo $GOBIN
+          export PATH=$PATH:$GOBIN
+          ls -latr $GOROOT
+          ls -latr $GOPATH
+          ls -latr $GOBIN
+          go env
+          echo "============="
