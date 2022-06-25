@@ -35,7 +35,7 @@ jobs:
           cd
           mkdir circle-ci-lambda
           pwd
-        working-directory: circle-ci-lambda
+        # working-directory: circle-ci-lambda
       - name: Checkout
         uses: actions/checkout@v1
       - name: Log Env Variables
