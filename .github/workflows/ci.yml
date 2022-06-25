@@ -32,11 +32,6 @@ jobs:
         ports:
           - "8080:8080"
     steps:
-      - name: Change Working Directory
-        run: |
-          echo "Changing Working Directory"
-          pwd
-          ls -a
       - name: Checkout
         uses: actions/checkout@v1
       - name: Log Env Variables
