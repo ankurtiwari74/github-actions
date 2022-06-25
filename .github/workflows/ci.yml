@@ -32,18 +32,15 @@ jobs:
       - name: Change Working Directory
         run: |
           echo "Changing Working Directory"
-          cd
-          mkdir circle-ci-lambda
-          pwd
-          ls -a
-        # working-directory: circle-ci-lambda
+          mkdir ~/circle-ci-lambda
+        # working-directory: ~/circle-ci-lambda
       - name: Checkout
         uses: actions/checkout@v1
       - name: Log Env Variables
         run: |
           echo "Logging Environment Variables"
           echo "============="
-          pwd
+          echo "Present Working Directory: ${pwd}"
           pwd -P
           echo $GOROOT
           echo $GOPATH
