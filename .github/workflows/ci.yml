@@ -35,6 +35,7 @@ jobs:
           cd
           mkdir circle-ci-lambda
           pwd
+          ls -a
         # working-directory: circle-ci-lambda
       - name: Checkout
         uses: actions/checkout@v1
