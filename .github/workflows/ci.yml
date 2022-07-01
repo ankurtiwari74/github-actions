@@ -62,5 +62,5 @@ jobs:
           OBG_DB_TEST_DSN: postgres://postgres:postgres@localhost:5432/circle_test?sslmode=disable
           OBG_MONGO_TEST_DSN: 'mongodb://localhost:27017'
           OBG_MONGO_TEST_DB: test
-        run: make test
+        run: go test
         
