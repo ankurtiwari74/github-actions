@@ -63,8 +63,15 @@ jobs:
           OBG_MONGO_TEST_DSN: 'mongodb://localhost:27017'
           OBG_MONGO_TEST_DB: test
         run: go test cmd/web/*.go
-      - name: Run Build
-        run: |
-          GOOS=linux GOARCH=amd64 make build
-          ls -la
+      # - name: Run Build
+      #   run: |
+      #     GOOS=linux GOARCH=amd64 make build
+      #     ls -la
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          name: id_rsa # optional
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
         
