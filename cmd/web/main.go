@@ -52,6 +52,7 @@ func main() {
 
 	// err = srv.ListenAndServe()
 	// log.Fatal(err)
+	srv.Close()
 }
 
 func run() (*driver.DB, error) {
