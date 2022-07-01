@@ -76,3 +76,8 @@ jobs:
           if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
       - name: Run Lambda
         run: make lambda
+      - name: Persist to Workspace
+        uses: actions/upload-artifact@v3
+        with:
+          name: OBG
+          path: .
