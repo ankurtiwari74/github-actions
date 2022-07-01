@@ -50,10 +50,7 @@ jobs:
           sh run.sh 
       - name: Install Dockerize
         run: |
-          wget
-          https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
-          && sudo tar -C /usr/local/bin -xzvf
-          dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm
-          dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+          wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf
+          dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
         env:
           DOCKERIZE_VERSION: v0.3.0
