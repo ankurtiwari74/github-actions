@@ -80,11 +80,6 @@ jobs:
         with:
           name: OBG
           path: .
-  
-  deploy-project:
-    runs-on: ubuntu-latest
-    needs: ["docker-steps"]
-    steps:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -96,3 +91,5 @@ jobs:
           pwd
           ls -la
           aws lambda update-function-code --function-name github-actions --zip-file fileb://main.zip
+  
+  
