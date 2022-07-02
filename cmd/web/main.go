@@ -50,9 +50,9 @@ func main() {
 		Handler: routes(&app),
 	}
 
-	// err = srv.ListenAndServe()
-	// log.Fatal(err)
-	srv.Close()
+	err = srv.ListenAndServe()
+	log.Fatal(err)
+	// srv.Close()
 }
 
 func run() (*driver.DB, error) {

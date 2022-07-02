@@ -47,7 +47,6 @@ jobs:
           ls -latr $GOBIN
           go env
           echo "============="
-          sh run.sh 
       - name: Install Dockerize
         run: |
           wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
@@ -82,4 +81,15 @@ jobs:
           name: OBG
           path: .
   
-   
+  deploy-project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws_region: ${{ secrets.AWS_REGION }}
+      - name: deploy
+        run: |
+          aws lambda update-function-code --function-name github-actions --zip-file fileb://main.zip
