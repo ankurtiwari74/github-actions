@@ -88,11 +88,9 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
       - name: deploy
         run: |
-          pwd
-          ls -la
           aws lambda update-function-code --function-name github-actions --zip-file fileb://main.zip
           ls -lah
-          echo dev > branch_name.tag
+          echo ${GITHUB_REF#refs/heads/} > branch_name.tag
+          echo ${{github.run_number}} > build.tag
+          echo ${GITHUB_REF#refs/heads/}
           echo ${{github.run_number}}
-          echo ${{github.run_id}}
-          
