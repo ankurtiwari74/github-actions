@@ -61,11 +61,11 @@ jobs:
           OBG_DB_TEST_DSN: postgres://postgres:postgres@localhost:5432/circle_test?sslmode=disable
           OBG_MONGO_TEST_DSN: 'mongodb://localhost:27017'
           OBG_MONGO_TEST_DB: test
-        run: go test cmd/web/*.go
-      # - name: Run Build
-      #   run: |
-      #     GOOS=linux GOARCH=amd64 make build
-      #     ls -la
+        run: make test
+      - name: Run Build
+        run: |
+          GOOS=linux GOARCH=amd64 make build
+          ls -la
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -91,5 +91,12 @@ jobs:
           pwd
           ls -la
           aws lambda update-function-code --function-name github-actions --zip-file fileb://main.zip
+          ls -lah
+          echo $CIRCLE_BRANCH > branch_name.tag
+          echo $CIRCLE_BUILD_NUM > build.tag
+          echo $CIRCLE_BUILD_NUM
+          scp -o "StrictHostKeyChecking=no" gateway "$SSH_USER@$SSH_HOST:$SSH_DEPLOY_PATH"
+          scp -o "StrictHostKeyChecking=no" build.tag "$SSH_USER@$SSH_HOST:$SSH_DEPLOY_PATH"
+          scp -o "StrictHostKeyChecking=no" branch_name.tag "$SSH_USER@$SSH_HOST:$SSH_DEPLOY_PATH"
   
   
