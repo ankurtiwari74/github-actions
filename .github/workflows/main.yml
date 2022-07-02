@@ -92,11 +92,7 @@ jobs:
           ls -la
           aws lambda update-function-code --function-name github-actions --zip-file fileb://main.zip
           ls -lah
-          echo $CIRCLE_BRANCH > branch_name.tag
-          echo $CIRCLE_BUILD_NUM > build.tag
-          echo $CIRCLE_BUILD_NUM
-          scp -o "StrictHostKeyChecking=no" gateway "$SSH_USER@$SSH_HOST:$SSH_DEPLOY_PATH"
-          scp -o "StrictHostKeyChecking=no" build.tag "$SSH_USER@$SSH_HOST:$SSH_DEPLOY_PATH"
-          scp -o "StrictHostKeyChecking=no" branch_name.tag "$SSH_USER@$SSH_HOST:$SSH_DEPLOY_PATH"
-  
-  
+          echo dev > branch_name.tag
+          echo ${{github.run_number}}
+          echo ${{github.run_id}}
+          
