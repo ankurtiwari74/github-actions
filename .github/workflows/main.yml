@@ -9,7 +9,7 @@ on:
       - dev
   
 jobs:
-  docker-steps:
+  deployment-steps:
     runs-on: ubuntu-latest
     services:
       mongo:
