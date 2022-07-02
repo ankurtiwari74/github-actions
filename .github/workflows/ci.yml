@@ -83,6 +83,7 @@ jobs:
   
   deploy-project:
     runs-on: ubuntu-latest
+    needs: ["docker-steps"]
     steps:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
