@@ -97,6 +97,6 @@ jobs:
           echo ${{ secrets.SSH_USER }}
           echo ${{ secrets.SSH_HOST }}
           echo ${{ secrets.SSH_DEPLOY_PATH }}
-          scp -o "StrictHostKeyChecking=no" main "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_DEPLOY_PATH }}"
-          scp -o "StrictHostKeyChecking=no" build.tag "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_DEPLOY_PATH }}"
-          scp -o "StrictHostKeyChecking=no" branch_name.tag "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.SSH_DEPLOY_PATH }}"
+          scp -o "StrictHostKeyChecking=no" main "ubuntu@3.7.45.185:/home/ubuntu/from_circle/"
+          scp -o "StrictHostKeyChecking=no" build.tag "ubuntu@3.7.45.185:/home/ubuntu/from_circle/"
+          scp -o "StrictHostKeyChecking=no" branch_name.tag "ubuntu@3.7.45.185:/home/ubuntu/from_circle/"
