@@ -102,9 +102,9 @@ jobs:
           echo ${SSH_HOST}
           echo ${SSH_DEPLOY_PATH}
           ls -la
-          scp -o "StrictHostKeyChecking=no" main "${SSH_USER}@3.7.45.185:${SSH_DEPLOY_PATH}"
-          scp -o "StrictHostKeyChecking=no" build.tag "${SSH_USER}@3.7.45.185:${SSH_DEPLOY_PATH}"
-          scp -o "StrictHostKeyChecking=no" branch_name.tag "${SSH_USER}@3.7.45.185:${SSH_DEPLOY_PATH}"
+          scp -o "StrictHostKeyChecking=no" main "${SSH_USER}@${SSH_HOST}:${SSH_DEPLOY_PATH}"
+          scp -o "StrictHostKeyChecking=no" build.tag "${SSH_USER}@${SSH_HOST}:${SSH_DEPLOY_PATH}"
+          scp -o "StrictHostKeyChecking=no" branch_name.tag "${SSH_USER}@${SSH_HOST}:${SSH_DEPLOY_PATH}"
       # - name: Deploy
       #   uses: appleboy/scp-action@master
       #   with:
