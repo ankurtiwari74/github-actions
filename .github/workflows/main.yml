@@ -102,12 +102,15 @@ jobs:
           echo ${SSH_HOST}
           echo ${SSH_DEPLOY_PATH}
           ls -la
-      - name: Deploy
-        uses: appleboy/scp-action@master
-        with:
-          host: "3.7.45.185"
-          username: "ubuntu"
-          port: 22
-          key: ${{ secrets.SSH_KEY }}
-          source: "/home/runner/work/github-actions/github-actions/main,/home/runner/work/github-actions/github-actions/build.tag,/home/runner/work/github-actions/github-actions/branch_name.tag"
-          target: "/home/ubuntu/from_circle/"
+          scp -o "StrictHostKeyChecking=no" main "ubuntu@3.7.45.185:${SSH_DEPLOY_PATH}"
+          scp -o "StrictHostKeyChecking=no" build.tag "ubuntu@3.7.45.185:${SSH_DEPLOY_PATH}"
+          scp -o "StrictHostKeyChecking=no" branch_name.tag "ubuntu@3.7.45.185:${SSH_DEPLOY_PATH}"
+      # - name: Deploy
+      #   uses: appleboy/scp-action@master
+      #   with:
+      #     host: "3.7.45.185"
+      #     username: "ubuntu"
+      #     port: 22
+      #     key: ${{ secrets.SSH_KEY }}
+      #     source: "/home/runner/work/github-actions/github-actions/main,/home/runner/work/github-actions/github-actions/build.tag,/home/runner/work/github-actions/github-actions/branch_name.tag"
+      #     target: "/home/ubuntu/from_circle/"
