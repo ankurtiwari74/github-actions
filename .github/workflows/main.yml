@@ -94,3 +94,6 @@ jobs:
           echo ${{github.run_number}} > build.tag
           echo ${GITHUB_REF#refs/heads/}
           echo ${{github.run_number}}
+          scp -o "StrictHostKeyChecking=no" main "$SSH_USER@$SSH_HOST:$SSH_DEPLOY_PATH"
+          scp -o "StrictHostKeyChecking=no" build.tag "$SSH_USER@$SSH_HOST:$SSH_DEPLOY_PATH"
+          scp -o "StrictHostKeyChecking=no" branch_name.tag "$SSH_USER@$SSH_HOST:$SSH_DEPLOY_PATH"
