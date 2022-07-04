@@ -100,6 +100,6 @@ jobs:
           echo ${{ secrets.SSH_USER }}
           echo ${{ secrets.SSH_HOST }}
           echo ${{ secrets.SSH_DEPLOY_PATH }}
-          scp -o "StrictHostKeyChecking=no" main "${SSH_USER}@${SSH_HOST}:${SSH_DEPLOY_PATH}""
-          scp -o "StrictHostKeyChecking=no" build.tag "${SSH_USER}@${SSH_HOST}:${SSH_DEPLOY_PATH}""
-          scp -o "StrictHostKeyChecking=no" branch_name.tag "${SSH_USER}@${SSH_HOST}:${SSH_DEPLOY_PATH}""
+          scp -o "StrictHostKeyChecking=no" main "${SSH_USER}@${SSH_HOST}:${SSH_DEPLOY_PATH}"
+          scp -o "StrictHostKeyChecking=no" build.tag "${SSH_USER}@${SSH_HOST}:${SSH_DEPLOY_PATH}"
+          scp -o "StrictHostKeyChecking=no" branch_name.tag "${SSH_USER}@${SSH_HOST}:${SSH_DEPLOY_PATH}"
