@@ -126,7 +126,7 @@ jobs:
             echo "Deploying to add_free_credits_prod"
             aws lambda update-function-code --function-name ProdAddFreeCredits --zip-file fileb://main.zip
           elif [ "${GITHUB_REF#refs/heads/}" == "dev" ]; then
-            echo "Deploying to dev"
+            echo "Deploying to dev."
             ls -lah
             echo ${GITHUB_REF#refs/heads/} > branch_name.tag
             echo ${{github.run_number}} > build.tag
