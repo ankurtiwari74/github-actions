@@ -4,6 +4,14 @@ on:
   push:
     branches: 
       - master
+      - dev
+      - stage
+      - consent_expire_dev
+      - consent_expire_stage
+      - consent_expire_prod
+      - add_free_credits_dev
+      - add_free_credits_stage
+      - add_free_credits_prod
   pull_request:
     branches: 
       - dev
@@ -92,16 +100,65 @@ jobs:
             SSH_HOST : ${{ secrets.SSH_HOST }}
             SSH_USER : ${{ secrets.SSH_USER }}
         run: |
-          ls -lah
-          echo ${GITHUB_REF#refs/heads/} > branch_name.tag
-          echo ${{github.run_number}} > build.tag
           echo ${GITHUB_REF#refs/heads/}
-          echo ${{github.run_number}}
-          pwd
-          echo ${SSH_USER}
-          echo ${SSH_HOST}
-          echo ${SSH_DEPLOY_PATH}
-          ls -la
-          scp -o "StrictHostKeyChecking=no" main "${SSH_USER}@3.7.45.185:${SSH_DEPLOY_PATH}"
-          scp -o "StrictHostKeyChecking=no" build.tag "${SSH_USER}@3.7.45.185:${SSH_DEPLOY_PATH}"
-          scp -o "StrictHostKeyChecking=no" branch_name.tag "${SSH_USER}@3.7.45.185:${SSH_DEPLOY_PATH}"
+          if [ "${GITHUB_REF#refs/heads/}" == "consent_expire_dev" ];
+          then
+            echo "Deploying to consent_expire_dev"
+            aws lambda update-function-code --function-name QAConsentExpire --zip-file fileb://main.zip
+          elif [ "${GITHUB_REF#refs/heads/}" == "consent_expire_stage" ]
+          then
+            echo "Deploying to consent_expire_stage"
+            aws lambda update-function-code --function-name StageConsentExpire --zip-file fileb://main.zip
+          elif [ "${GITHUB_REF#refs/heads/}" == "consent_expire_prod" ]
+          then
+            echo "Deploying to consent_expire_prod"
+            aws lambda update-function-code --function-name ProdConsentExpire --zip-file fileb://main.zip
+          elif [ "${GITHUB_REF#refs/heads/}" == "add_free_credits_dev" ]
+          then
+            echo "Deploying to add_free_credits_dev"
+            aws lambda update-function-code --function-name QAAddFreeCredits --zip-file fileb://main.zip
+          elif [ "${GITHUB_REF#refs/heads/}" == "add_free_credits_stage" ]
+          then
+            echo "Deploying to add_free_credits_stage"
+            aws lambda update-function-code --function-name StageAddFreeCredits --zip-file fileb://main.zip
+          elif [ "${GITHUB_REF#refs/heads/}" == "add_free_credits_prod" ]
+          then
+            echo "Deploying to add_free_credits_prod"
+            aws lambda update-function-code --function-name ProdAddFreeCredits --zip-file fileb://main.zip
+          elif [ "${GITHUB_REF#refs/heads/}" == "dev" ]; then
+            echo "Deploying to dev"
+            ls -lah
+            echo ${GITHUB_REF#refs/heads/} > branch_name.tag
+            echo ${{github.run_number}} > build.tag
+            echo ${GITHUB_REF#refs/heads/}
+            echo ${{github.run_number}}
+            pwd
+            echo ${SSH_USER}
+            echo ${SSH_HOST}
+            echo ${SSH_DEPLOY_PATH}
+            ls -la
+            scp -o "StrictHostKeyChecking=no" main "${SSH_USER}@3.7.45.185:${SSH_DEPLOY_PATH}"
+            scp -o "StrictHostKeyChecking=no" build.tag "${SSH_USER}@3.7.45.185:${SSH_DEPLOY_PATH}"
+            scp -o "StrictHostKeyChecking=no" branch_name.tag "${SSH_USER}@3.7.45.185:${SSH_DEPLOY_PATH}"
+          elif [ "${GITHUB_REF#refs/heads/}" == "master" ]; then
+            echo "Deploying to master"
+            ssh -V
+            ls -lah
+            echo ${GITHUB_REF#refs/heads/} > branch_name.tag
+            echo ${{github.run_number}} > build.tag
+            ssh -o "StrictHostKeyChecking=no" $SSH_USER_BASTION@$SSH_PROD_BASTION_HOST  "hostname"
+            ssh -o "StrictHostKeyChecking=no" -J $SSH_USER_BASTION@$SSH_PROD_BASTION_HOST deploy@10.0.11.153 "hostname"
+            ssh -o "StrictHostKeyChecking=no" -J $SSH_USER_BASTION@$SSH_PROD_BASTION_HOST deploy@10.0.11.153 " if [[ ! -d $SSH_DEPLOY_PATH ]]; then mkdir -p $SSH_DEPLOY_PATH ; fi"
+            scp -o "StrictHostKeyChecking=no" -o 'ProxyJump $SSH_USER_BASTION@$SSH_PROD_BASTION_HOST' gateway deploy@10.0.11.153:$SSH_DEPLOY_PATH
+            scp -o "StrictHostKeyChecking=no" -o 'ProxyJump $SSH_USER_BASTION@$SSH_PROD_BASTION_HOST' build.tag deploy@10.0.11.153:$SSH_DEPLOY_PATH
+            scp -o "StrictHostKeyChecking=no" -o 'ProxyJump $SSH_USER_BASTION@$SSH_PROD_BASTION_HOST' branch_name.tag deploy@10.0.11.153:$SSH_DEPLOY_PATH
+            ssh -o "StrictHostKeyChecking=no" -J $SSH_USER_BASTION@$SSH_PROD_BASTION_HOST deploy@10.0.11.153 "cd /home/deploy && . deploy.sh"
+            ssh -o "StrictHostKeyChecking=no" -J $SSH_USER_BASTION@$SSH_PROD_BASTION_HOST deploy@10.0.12.26 "hostname"
+            ssh -o "StrictHostKeyChecking=no" -J $SSH_USER_BASTION@$SSH_PROD_BASTION_HOST deploy@10.0.12.26 " if [[ ! -d $SSH_DEPLOY_PATH ]]; then mkdir -p $SSH_DEPLOY_PATH ; fi"
+            scp -o "StrictHostKeyChecking=no" -o 'ProxyJump $SSH_USER_BASTION@$SSH_PROD_BASTION_HOST' gateway deploy@10.0.12.26:$SSH_DEPLOY_PATH
+            scp -o "StrictHostKeyChecking=no" -o 'ProxyJump $SSH_USER_BASTION@$SSH_PROD_BASTION_HOST' build.tag deploy@10.0.12.26:$SSH_DEPLOY_PATH
+            scp -o "StrictHostKeyChecking=no" -o 'ProxyJump $SSH_USER_BASTION@$SSH_PROD_BASTION_HOST' branch_name.tag deploy@10.0.12.26:$SSH_DEPLOY_PATH
+            ssh -o "StrictHostKeyChecking=no" -J $SSH_USER_BASTION@$SSH_PROD_BASTION_HOST deploy@10.0.12.26 "cd /home/deploy && . deploy.sh"
+          else
+            echo "There is master branch, dry run only!"
+          fi
