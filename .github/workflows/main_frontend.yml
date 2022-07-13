@@ -42,7 +42,7 @@ jobs:
       #         echo "No any branch"
       #         exit
       #     fi
-      #     echo ${{github.run_number}} > ./build/build.num
+      #     echo ${{github.run_number}} > /home/runner/work/github-actions/github-actions/build/build.num
       # Save Cache
       # - name: Save Cache
       #   uses: actions/cache@v3
@@ -54,8 +54,8 @@ jobs:
         run: |
           pwd
           ls -la
-          ./build ls -la
-          mv ./build ${GITHUB_REF#refs/heads/}
+          /home/runner/work/github-actions/github-actions/build ls -la
+          mv /home/runner/work/github-actions/github-actions/build ${GITHUB_REF#refs/heads/}
           zip -r ${GITHUB_REF#refs/heads/}.zip ./${GITHUB_REF#refs/heads/}
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
