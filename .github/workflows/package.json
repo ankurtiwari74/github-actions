@@ -1,0 +1,84 @@
+{
+  "name": "trustloop_client-side_core",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "@types/intl-messageformat": "^3.0.0",
+    "@types/jest": "24.0.23",
+    "@types/lodash": "^4.14.149",
+    "@types/moment": "^2.13.0",
+    "@types/node": "12.12.14",
+    "@types/query-string": "^6.3.0",
+    "@types/react": "16.9.13",
+    "@types/react-dom": "16.9.4",
+    "@types/react-input-mask": "^3.0.0",
+    "@types/react-intl": "^3.0.0",
+    "@types/react-redux": "^7.1.5",
+    "@types/react-router-dom": "^5.1.3",
+    "@types/react-transition-group": "^4.2.3",
+    "@types/redux-logger": "^3.0.7",
+    "@types/shortid": "^0.0.29",
+    "@types/styled-components": "^4.4.0",
+    "@types/yup": "^0.26.26",
+    "clsx": "^1.0.4",
+    "formatjs": "^0.1.1",
+    "formik": "^2.0.6",
+    "history": "^4.10.1",
+    "intl-messageformat": "^7.7.2",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "query-string": "^6.9.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-input-mask": "^2.0.4",
+    "react-intl": "^3.9.2",
+    "react-redux": "^7.1.3",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.4.1",
+    "react-transition-group": "^4.3.0",
+    "redux": "^4.0.4",
+    "redux-logger": "^3.0.6",
+    "shortid": "^2.2.15",
+    "styled-components": "^4.4.1",
+    "typescript": "^3.9.2",
+    "yup": "^0.27.0"
+  },
+  "scripts": {
+    "tsc": "tsc -w",
+    "tsc:watch": "tsc -w",
+    "start": "set REACT_APP_BACKEND_TYPE=aws&&react-scripts start",
+    "start:local": "set REACT_APP_BACKEND_TYPE=local&&react-scripts start",
+    "build:qa": "REACT_APP_BACKEND_TYPE=aws REACT_APP_ENV=qa react-scripts build",
+    "build:stage": "REACT_APP_BACKEND_TYPE=aws REACT_APP_ENV=stage react-scripts build",
+    "build:prod": "REACT_APP_BACKEND_TYPE=aws REACT_APP_ENV=prod react-scripts build",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-import": "^2.19.1",
+    "eslint-plugin-prettier": "^3.1.2",
+    "prettier": "^1.19.1"
+  }
+}

@@ -1,0 +1,102 @@
+name: Open Banking Gateway - Admin Frontend
+  
+on:
+  push:
+    branches:
+      - master
+      - stage
+      - dev
+  pull_request:
+    branches: 
+      - dev
+
+jobs:
+  deployment-steps:
+    runs-on: ubuntu-latest
+    services:
+      node:
+        image: node:14.15.0-alpine
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Cache Node Modules
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: v1-dependencies-{{ checksum "package.json" }}
+          restore-keys: v1-dependencies-
+      - name: Install Dependencies and Build React App
+        run: |
+          REACT_APP_BACKEND_TYPE=aws
+          yarn install
+          if [ "${GITHUB_REF#refs/heads/}" == "dev" ];
+          then
+            yarn build:qa
+          elif [ "${GITHUB_REF#refs/heads/}" == "stage" ];
+          then
+            yarn build:stage
+          elif [ "${GITHUB_REF#refs/heads/}" == "master" ];
+          then
+            yarn build:prod
+          else
+              echo "No any branch"
+              exit
+          fi
+          echo ${{github.run_number}} > ./build/build.num
+      # Save Cache
+      # - name: Save Cache
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: ~/.npm
+      #     key: v1-dependencies-{{ checksum "package.json" }}
+      #     restore-keys: v1-dependencies-
+      - name: Compress Files for Transfer to Target Server
+        run: |
+          pwd
+          ls -la
+          ./build ls -la
+          mv ./build ${GITHUB_REF#refs/heads/}
+          zip -r ${GITHUB_REF#refs/heads/}.zip ./${GITHUB_REF#refs/heads/}
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          name: id_rsa # optional
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          if_key_exists: fail # replace / ignore / fail; optional (defaults to fail)
+      - name: Deploy over SSH
+        env:
+            SSH_DEPLOY_PATH: ${{ secrets.SSH_DEPLOY_PATH }}
+            SSH_HOST : ${{ secrets.SSH_HOST }}
+            SSH_USER : ${{ secrets.SSH_USER }}
+            SSH_USER_BASTION : ${{ secrets.SSH_USER_BASTION }}
+            SSH_PROD_BASTION_HOST : ${{ secrets.SSH_PROD_BASTION_HOST }}
+            SSH_HOST_STAGE : ${{ secrets.SSH_HOST_STAGE }}
+        run: |
+          if [ "${GITHUB_REF#refs/heads/}" == "master" ];
+          then
+            echo ${{github.run_number}} > build.tag
+            scp -o "StrictHostKeyChecking=no" ${GITHUB_REF#refs/heads/}.zip "${SSH_USER}@3.7.45.185:${SSH_DEPLOY_PATH}"
+            scp -o "StrictHostKeyChecking=no" build.tag "${SSH_USER}@3.7.45.185:${SSH_DEPLOY_PATH}"
+            ssh -o "StrictHostKeyChecking=no" "${SSH_USER}@3.7.45.185" "cd ${SSH_DEPLOY_PATH} && . deploy_admin.sh"
+          elif [ "${GITHUB_REF#refs/heads/}" == "stage" ];
+          then
+            echo ${{github.run_number}} > build.tag
+            scp -o "StrictHostKeyChecking=no" ${GITHUB_REF#refs/heads/}.zip "${SSH_USER}@3.7.45.185:${SSH_DEPLOY_PATH}"
+            scp -o "StrictHostKeyChecking=no" build.tag "${SSH_USER}@3.7.45.185:${SSH_DEPLOY_PATH}"
+            ssh -o "StrictHostKeyChecking=no" "${SSH_USER}@3.7.45.185" "cd ${SSH_DEPLOY_PATH} && . deploy_admin.sh"
+          elif [ "${GITHUB_REF#refs/heads/}" == "master_" ];
+          then
+            echo ${{github.run_number}} > build.tag
+            ssh -o "StrictHostKeyChecking=no" ec2-user@3.7.45.185 "id"
+            ssh -o "StrictHostKeyChecking=no" -J ${SSH_USER_BASTION}@3.7.45.185 deploy@10.0.11.168 "hostname"
+            scp -o "StrictHostKeyChecking=no" -o 'ProxyJump ${SSH_USER_BASTION}@3.7.45.185' build.tag deploy@10.0.11.168:${SSH_DEPLOY_PATH}
+            scp -o "StrictHostKeyChecking=no" -o 'ProxyJump ${SSH_USER_BASTION}@3.7.45.185' ${GITHUB_REF#refs/heads/}.zip deploy@10.0.11.168:${SSH_DEPLOY_PATH}
+            ssh -o "StrictHostKeyChecking=no" -J ${SSH_USER_BASTION}@3.7.45.185 deploy@10.0.11.168 "cd ${SSH_DEPLOY_PATH} && . deploy_admin.sh"
+            ssh -o "StrictHostKeyChecking=no" -J ${SSH_USER_BASTION}@3.7.45.185 deploy@10.0.12.162 "hostname"
+            scp -o "StrictHostKeyChecking=no" -o 'ProxyJump ${SSH_USER_BASTION}@3.7.45.185' build.tag deploy@10.0.12.162:${SSH_DEPLOY_PATH}
+            scp -o "StrictHostKeyChecking=no" -o 'ProxyJump ${SSH_USER_BASTION}@3.7.45.185' ${GITHUB_REF#refs/heads/}.zip deploy@10.0.12.162:${SSH_DEPLOY_PATH}
+            ssh -o "StrictHostKeyChecking=no" -J ${SSH_USER_BASTION}@3.7.45.185 deploy@10.0.12.162 "cd ${SSH_DEPLOY_PATH} && . deploy_admin.sh"
+          else
+              echo "No any branch"
+          fi

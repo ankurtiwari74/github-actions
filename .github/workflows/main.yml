@@ -1,17 +1,17 @@
 name: Open Banking Backend
 
 on:
-  push:
-    branches: 
-      - master
-      - dev
-      - stage
-      - consent_expire_dev
-      - consent_expire_stage
-      - consent_expire_prod
-      - add_free_credits_dev
-      - add_free_credits_stage
-      - add_free_credits_prod
+  # push:
+  #   branches: 
+  #     - master
+  #     - dev
+  #     - stage
+  #     - consent_expire_dev
+  #     - consent_expire_stage
+  #     - consent_expire_prod
+  #     - add_free_credits_dev
+  #     - add_free_credits_stage
+  #     - add_free_credits_prod
   pull_request:
     branches: 
       - dev
