@@ -25,24 +25,24 @@ jobs:
           path: ~/.npm
           key: v1-dependencies-{{ checksum "package.json" }}
           restore-keys: v1-dependencies-
-      - name: Install Dependencies and Build React App
-        run: |
-          REACT_APP_BACKEND_TYPE=aws
-          yarn install
-          if [ "${GITHUB_REF#refs/heads/}" == "dev" ];
-          then
-            yarn build:qa
-          elif [ "${GITHUB_REF#refs/heads/}" == "stage" ];
-          then
-            yarn build:stage
-          elif [ "${GITHUB_REF#refs/heads/}" == "master" ];
-          then
-            yarn build:prod
-          else
-              echo "No any branch"
-              exit
-          fi
-          echo ${{github.run_number}} > ./build/build.num
+      # - name: Install Dependencies and Build React App
+      #   run: |
+      #     REACT_APP_BACKEND_TYPE=aws
+      #     yarn install
+      #     if [ "${GITHUB_REF#refs/heads/}" == "dev" ];
+      #     then
+      #       yarn build:qa
+      #     elif [ "${GITHUB_REF#refs/heads/}" == "stage" ];
+      #     then
+      #       yarn build:stage
+      #     elif [ "${GITHUB_REF#refs/heads/}" == "master" ];
+      #     then
+      #       yarn build:prod
+      #     else
+      #         echo "No any branch"
+      #         exit
+      #     fi
+      #     echo ${{github.run_number}} > ./build/build.num
       # Save Cache
       # - name: Save Cache
       #   uses: actions/cache@v3
