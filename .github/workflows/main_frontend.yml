@@ -54,6 +54,7 @@ jobs:
         run: |
           pwd
           ls -la
+          mkdir build
           /home/runner/work/github-actions/github-actions/build ls -la
           mv /home/runner/work/github-actions/github-actions/build ${GITHUB_REF#refs/heads/}
           zip -r ${GITHUB_REF#refs/heads/}.zip ./${GITHUB_REF#refs/heads/}
